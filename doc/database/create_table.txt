@@ -1,0 +1,112 @@
+CREATE TABLE member_tb (
+	member_no int,
+	member_id varchar(255),
+	member_pwd varchar(255),
+	member_nick_name varchar(255),
+	member_name varchar(255),
+	member_email varchar(255),
+	member_intro text,
+	member_reg_date datetime,
+	PRIMARY KEY (member_no)
+);
+
+CREATE TABLE folder_tb (
+	folder_no int,
+	folder_name varchar(255),
+	super_folder_no int,
+	member_no int,
+	PRIMARY KEY (folder_no)
+);
+ALTER TABLE folder_tb ADD FOREIGN KEY (member_no) REFERENCES member_tb (member_no);
+ALTER TABLE folder_tb ADD FOREIGN KEY (super_folder_no) REFERENCES folder_tb (folder_no);
+
+CREATE TABLE file_tb (
+	file_no int,
+	file_name varchar(255),
+	file_extension varchar(255),
+	file_upload_date datetime,
+	file_size bigint,
+	folder_no int,
+	member_no int,
+	PRIMARY KEY (file_no)
+);
+ALTER TABLE file_tb ADD FOREIGN KEY (folder_no) REFERENCES folder_tb (folder_no);
+ALTER TABLE file_tb ADD FOREIGN KEY (member_no) REFERENCES member_tb (member_no);
+
+CREATE TABLE play_list_tb (
+	play_list_no int,
+	play_list_title varchar(255),
+	member_no int,
+	play_list_intro text,
+	play_list_reg_date datetime,
+	PRIMARY KEY (play_list_no)
+);
+ALTER TABLE play_list_tb ADD FOREIGN KEY (member_no) references member_tb (member_no);
+
+CREATE TABLE like_play_list_tb (
+	play_list_no int,
+	member_no int,
+	PRIMARY KEY (play_list_no, member_no);
+);
+ALTER TABLE like_play_list_tb ADD FOREIGN KEY (play_list_no) REFERENCES play_list_tb (play_list_no);
+ALTER TABLE like_play_list_tb ADD FOREIGN KEY (member_no) REFERENCES member_tb (member_no);
+
+CREATE TABLE genre_tb (
+	genre_no int,
+	genre_name varchar(255),
+	PRIMARY KEY (genre_no)
+);
+
+CREATE TABLE music_tb (
+	file_no int,
+	genre_no int,
+	music_title varchar(255),
+	music_intro text,
+	music_reg_date datetime,
+	music_play_time bigint,
+	music_play_cnt int,
+	music_like_cnt int,
+	member_no int,
+	PRIMARY KEY (file_no);
+);
+ALTER TABLE music_tb ADD FOREIGN KEY (file_no) REFERENCES file_tb (file_no);
+ALTER TABLE music_tb ADD FOREIGN KEY (genre_no) REFERENCES genre_tb (genre_no);
+ALTER TABLE music_tb ADD FOREIGN KEY (member_no) REFERENCES member_tb (member_no);
+
+CREATE TABLE tag_music_tb (
+	tag_name varchar(255),
+	file_no int,
+	PRIMARY KEY (tag_name, file_no)
+);
+ALTER TABLE tag_music_tb ADD FOREIGN KEY (file_no) REFERENCES file_tb (file_no);
+
+CREATE TABLE play_count_tb (
+	file_no int,
+	play_cnt int,
+	PRIMARY KEY(file_no)
+);
+ALTER TABLE play_count_tb ADD FOREIGN KEY (file_no) REFERENCES file_tb (file_no);
+
+CREATE TABLE like_music_tb (
+	member_no int,
+	file_no int,
+	PRIMARY KEY (member_no, file_no)
+);
+ALTER TABLE like_music_tb ADD FOREIGN KEY (member_no) REFERENCES member_tb (member_no);
+ALTER TABLE like_music_tb ADD FOREIGN KEY (file_no) REFERENCES file_tb (file_no);
+
+CREATE TABLE track_list_tb (
+	track_order int,
+	play_list_no int,
+	file_no int,
+	PRIMARY KEY (track_order, play_list_no)
+);
+ALTER TABLE track_list_tb ADD FOREIGN KEY (play_list_no) REFERENCES play_list_tb (play_list_no);
+ALTER TABLE track_list_tb ADD FOREIGN KEY (file_no) REFERENCES file_tb (file_no);
+
+CREATE TABLE tag_play_list_tb (
+	tag_name varchar(255),
+	play_list_no int,
+	PRIMARY KEY (tag_name, play_list_no)
+);
+ALTER TABLE tag_play_list_tb ADD FOREIGN KEY (play_list_no) REFERENCES play_list_tb (play_list_no);
