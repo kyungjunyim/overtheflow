@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class FileVO {
 	private Integer fileNo;
 	private String fileName;
@@ -19,4 +19,5 @@ public class FileVO {
 	private Long fileSize;
 	private Integer folderNo;
 	private Integer memberNo;
+	private String memberNickName;
 }

@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class GenreVO {
-	private int genreNo;
+	private Integer genreNo;
 	private String genreName;
 }

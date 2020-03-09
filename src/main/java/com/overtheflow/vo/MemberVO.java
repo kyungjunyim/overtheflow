@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class MemberVO {
 	private Integer memberNo;
 	private String memberId;

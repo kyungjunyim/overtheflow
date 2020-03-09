@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class FolderVO {
 	private Integer folderNo;
 	private String folderName;
 	private Integer superFolderNo;
 	private Integer memberNo;
+	private Long folderSize;
+	private Integer subFileCnt;
 }
