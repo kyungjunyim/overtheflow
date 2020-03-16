@@ -30,6 +30,18 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />		
 	</bean>
 	
+	<bean id="fileMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.overtheflow.mapper.FileMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	<bean id="fileViewMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.overtheflow.mapper.FileViewMapper"/>
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	
+	
+	
 	<context:component-scan base-package="com.overtheflow.mapper"></context:component-scan>
 	<context:component-scan base-package="com.overtheflow.service"></context:component-scan>
 

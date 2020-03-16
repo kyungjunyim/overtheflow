@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overtheflow.mapper.TagPlaylistMapper">
+
+	<insert id="addTagPlaylist" parameterType="map">
+		INSERT INTO tag_playlist_tb (tag_name, playlist_no)
+		VALUES(#{tagName}, #{playlistNo})
+	</insert>
+	<insert id="addTagsPlaylist" parameterType="map">
+		<foreach collection="tags" item="tagName" open="INSERT ALL" separator="" close="SELECT * FROM DUAL">
+			INTO tag_playlist_tb
+			VALUES
+			 ('${tagName}', #{playlistNo})
+		</foreach> 
+	</insert>	
+	<delete id="deleteTagPlaylist" parameterType="Integer">
+		DELETE FROM
+			tag_playlist_tb
+		WHERE
+			playlist_no=#{playlistNo}
+	</delete>
+	<select id="getTagPlaylist" parameterType="Integer" resultType="String">
+		SELECT 
+			tag_name
+		FROM
+			tag_playlist_tb
+		WHERE
+			playlist_no=#{playlistNo}
+	</select>
+	<select id="searchTagPlaylist" parameterType="String" resultType="Integer">
+			SELECT
+				playlist_no
+			FROM
+				tag_playlist_tb
+			WHERE
+				tag_name=#{tagName}
+	</select>
+</mapper>

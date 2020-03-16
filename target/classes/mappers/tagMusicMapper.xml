@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" " http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.overtheflow.mapper.TagMusicMapper">
+	
+	<insert id="addMusicTag" parameterType="map">
+		<foreach collection="tags" item="tagName" open="INSERT ALL" separator="" close="SELECT * FROM DUAL">
+			INTO tag_music_tb
+			VALUES
+			 ('${tagName}', ${fileNo})
+		</foreach> 
+	</insert>
+	
+	<!-- <update id="modifyMusicTag" parameterType="TagMusicVO">
+	UPDATE tag_music_tb
+	SET tag_name = #{tagName}
+	WHERE file_no = #{fileNo}
+	</update>
+	 -->
+
+	<delete id="deleteMusicTag" parameterType="int">
+	DELETE FROM
+	tag_music_tb 
+	WHERE file_no=#{fileNo}
+	</delete>
+	
+	<select id="getMusicTags" parameterType="map" resultType="Integer" >
+		SELECT file_no
+		FROM tag_music_tb
+		WHERE tag_name like '%${keyword}%'	
+	</select>
+	
+	<select id="getTagsByNo" parameterType="int" resultType="String">
+		SELECT tag_name
+		FROM tag_music_tb
+		WHERE file_no = #{file_no}
+	</select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overtheflow.mapper.LikePlaylistMapper">
+	<insert id="addLikePlaylist" parameterType="map">
+		INSERT INTO
+			like_playlist_tb
+		VALUES(#{playlistNo}, #{memberNo})
+	</insert>
+	
+	<delete id="deleteLikePlaylist" parameterType="map">
+		DELETE FROM 
+			like_playlist_tb
+		WHERE
+			playlist_no=#{playlistNo} AND member_no=#{memberNo}
+	</delete>
+	
+	<delete id="deleteLikePlaylistByNo" parameterType="Integer">
+		DELETE FROM
+			like_playlist_tb
+		WHERE
+			playlist_no=#{playlistNo}
+	</delete>
+	
+	<select id="getLikePlaylist" parameterType="map" resultType="Integer">
+		SELECT
+			playlist_no
+		FROM
+			like_playlist_tb
+		WHERE
+			playlist_no=#{playlistNo} AND member_no=#{memberNo}
+	</select>
+	
+	<select id="getAllLikePlaylist" parameterType="Integer" resultType="Integer">		
+			SELECT
+				playlist_no
+			FROM
+				like_playlist_tb
+			WHERE
+				member_no=#{memberNo}
+
+	</select>
+</mapper>

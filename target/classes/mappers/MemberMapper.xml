@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overtheflow.mapper.MemberMapper">
+	<resultMap id="result" type="com.overtheflow.vo.MemberVO">
+		<id property="memberNo" column="member_no" />
+		<id property="memberClassNo" column="member_class_no" />
+		<id property="memberId" column="member_id" />
+		<id property="memberNickname" column="member_nickname" />
+		<id property="memberEmail" column="member_email" />
+		<id property="memberPassword" column="member_password" />
+		<id property="memberName" column="member_name" />
+		<id property="memberIntro" column="member_intro" />
+		<id property="memberRegDate" column="member_reg_date" />
+	</resultMap>
+	<insert id="addMember" parameterType="com.overtheflow.vo.MemberVO">
+		insert into member_tb
+			(member_no, member_class_no, member_id, member_nickname, member_email, member_password, member_name,
+			member_intro)
+				values (#{memberNo},#{memberClassNo}, #{memberId}, #{memberNickname},
+				#{memberEmail},#{memberPassword},#{memberName},#{memberIntro})
+	</insert>
+	<update id="modifyMember" parameterType="com.overtheflow.vo.MemberVO">
+		update member_tb 
+		<set>
+	      <if test="memberClassNo != null">member_class_no=#{memberClassNo},</if>
+	      <if test="memberEmail != null">member_email=#{memberEmail},</if>
+	      <if test="memberNickname != null">member_nickname=#{memberNickname},</if>
+	      <if test="memberPassword != null">member_password=#{memberPassword},</if>
+	      <if test="memberName != null">member_name=#{memberName},</if>
+	      <if test="memberIntro != null">member_intro=#{memberIntro},</if>
+    	</set>
+    	where member_no=#{memberNo}
+	</update>
+	<delete id="deleteMember" parameterType="int">
+		delete from member_tb where member_no=#{memberNo}
+	</delete>
+	<select id="getMaxNo" resultType="Integer">
+		select max(member_no) as max from member_view
+	</select>
+</mapper>	

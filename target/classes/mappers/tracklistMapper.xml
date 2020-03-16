@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overtheflow.mapper.TracklistMapper">
+	<insert id="addTrack" parameterType="map">	
+		insert into tracklist_tb (tracklist_order, playlist_no, file_no)
+			values ( #{trackOrder}, #{playlistNo},#{musicNo})
+	</insert>
+	<insert id="addTracklist" parameterType="map">
+		<foreach collection="tracklist" item="track" open="INSERT ALL" separator="" close="SELECT * FROM DUAL">
+			INTO tracklist_tb
+				(tracklist_order, playlist_no, file_no)
+			VALUES
+			 ( #{track.trackOrder},#{track.playlistNo},#{track.musicNo})
+		</foreach> 	
+	</insert>	
+	<delete id="clearTracklist" parameterType="Integer">
+		DELETE FROM
+			tracklist_tb
+		WHERE
+			playlist_no=#{playlistNo}
+	</delete>
+	<delete id="deleteTrack" parameterType="map">
+		DELETE FROM
+			tracklist_tb
+		WHERE
+			playlist_no=#{playlistNo} AND file_no=#{musicNo}
+	</delete>
+	<delete id="deleteTracklist" parameterType="map">
+		DELETE FROM
+			tracklist_tb
+		where playlist_no=#{playlistNo}
+		and file_no in
+			<foreach collection="musicNos" item="musicNo" open="(" close=")" separator=",">
+				${musicNo}
+			</foreach>
+	</delete>
+	<delete id="deleteTrackBymusicNo" parameterType="Integer">
+		DELETE FROM
+			tracklist_tb
+		where music_no=#{musicNo}
+	</delete>
+	
+	<delete id="deleteTrackOnPublic" parameterType="map">
+		DELETE FROM tracklist_tb track WHERE track.file_no = #{fileNo} AND
+		playlist_no NOT IN 
+		(SELECT list.playlist_no FROM playlist_tb list WHERE list.member_no = #{memberNo} AND list.playlist_visibility = 0)
+	</delete>
+	
+	<select id="getTrack" parameterType="map" resultType="Integer">
+		SELECT
+			file_no
+		FROM
+			tracklist_tb
+		WHERE
+			playlist_no=#{playlistNo} AND file_no=#{musicNo}
+	</select>
+	<select id="getTracklist" parameterType="Integer" resultType="Integer">
+		SELECT
+			file_no
+		FROM
+			tracklist_tb
+		WHERE
+			playlist_no=#{playlistNo}
+		ORDER BY 
+			tracklist_order ASC
+	</select>
+	<select id="getMaxTrackOrder" parameterType="Integer" resultType="Integer">
+		select max(tracklist_order) as track_max from tracklist_tb
+				where playlist_no=#{playlistNo} group by playlist_no
+	</select>
+</mapper>

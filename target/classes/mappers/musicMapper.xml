@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" " http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.overtheflow.mapper.MusicMapper">
+	
+	<insert id="addMusic" parameterType="musicVO">
+	INSERT INTO music_tb(file_no,genre_no,member_no,music_playtime,music_title,music_intro,music_visibility,music_download_accept) 
+	values(#{fileNo},#{genreNo},#{memberNo},#{musicPlaytime},#{musicTitle},#{musicIntro}, #{musicVisibility}, #{musicDownloadAccept})
+	</insert>
+	
+	<insert id="increasePlayCount" parameterType="int">
+      UPDATE play_count_tb SET play_count = play_count + 1 WHERE file_no = #{fileNo}   
+   </insert>
+	
+	<insert id="addPlayCount" parameterType="int">
+		INSERT INTO play_count_tb VALUES(#{fileNo}, 0)
+	</insert>
+		
+	<update id="modifyMusic" parameterType="musicVO">
+	UPDATE music_tb
+	SET genre_no = #{genreNo}, music_title = #{musicTitle}, music_intro = #{musicIntro}
+	,music_reg_date = sysdate, music_visibility = #{musicVisibility}, music_download_accept = #{musicDownloadAccept}
+	WHERE file_no = #{fileNo}
+	</update>
+	
+	<delete id="deleteMusic" parameterType="int">
+	DELETE FROM
+	music_tb 
+	WHERE file_no=#{fileNo}
+	</delete>
+	
+	<delete id="deletePlayCount" parameterType="int">
+		DELETE FROM play_count_tb WHERE file_no = #{fileNo}
+	</delete>
+</mapper>

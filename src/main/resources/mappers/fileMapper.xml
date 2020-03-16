@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.overtheflow.mapper.FileMapper">
+
+	<resultMap type="com.overtheflow.vo.FileVO" id="file">
+		<id property="fileNo" column="file_no"/>
+		<id property="folderNo" column="folder_no"/>
+		<id property="memberNo" column="member_no"/>
+		<id property="fileSize" column="file_size"/>
+		<id property="fileName" column="file_name"/>
+		<id property="fileExtension" column="file_extension"/>
+		<id property="fileUploadDate" column="file_upload_date"/>
+	</resultMap>
+	
+	<insert id="addFile" parameterType="FileVO">
+		INSERT INTO file_tb (file_no, folder_no, member_no, file_size, file_name, file_extension, file_upload_date) 
+		VALUES (#{fileNo}, #{folderNo}, #{memberNo}, #{fileSize}, #{fileName}, #{fileExtension}, SYSDATE())	
+	</insert>
+	
+	<update id="modifyFile" parameterType="FileVO">
+		UPDATE file_tb SET 
+			<if test="folderNo != null">
+				folder_no = #{folderNo},
+			</if>
+			<if test="fileName != null">
+				file_name = #{fileName},
+			</if>
+			<if test="fileExtension != null">
+				file_extension = #{fileExtension},
+			</if>
+			<if test="fileUploadDate != null">
+				file_upload_date = #{fileUploadDate},
+			</if>
+			file_no = #{fileNo}
+		WHERE file_no = #{fileNo}
+	</update>
+	
+	<delete id="deleteFile" parameterType="FileVO">
+		DELETE FROM file_tb WHERE file_no = #{fileNo}
+	</delete>
+	
+	<delete id="deleteFiles" parameterType="map">
+		DELETE FROM file_tb
+		WHERE file_no in 
+		<foreach collection="files" open="(" close=")" item="file" separator=",">
+			#{file}
+		</foreach>
+	</delete>
+</mapper>

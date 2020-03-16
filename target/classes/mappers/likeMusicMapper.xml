@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" " http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.overtheflow.mapper.LikeMusicMapper">
+
+	
+	<insert id="addLikeMusic" parameterType="map">
+		INSERT INTO like_music_tb values(#{memberNo},#{fileNo})
+	</insert>
+	
+	<delete id="deleteLikeMusic" parameterType="map">
+		DELETE FROM like_music_tb
+		WHERE member_no=#{memberNo}
+		AND file_no=#{fileNo}
+	</delete>
+	
+	<select id="isLike" resultType="Integer">
+		SELECT file_no
+		FROM like_music_tb 
+		WHERE member_no=#{memberNo} AND file_no=#{fileNo}
+	</select>
+	
+	<select id="getLikeMusicsByNo" parameterType="map" resultType="Integer">
+		SELECT file_no
+		FROM 
+			(
+				SELECT file_no, ROWNUM rnum
+				FROM (
+						SELECT file_no
+						FROM like_music_tb
+						WHERE member_no = #{memberNo}
+						<if test="orderColumn!=null">
+							ORDER BY ${orderColumn}
+						</if>
+						<if test="desc != null">
+							DESC
+						</if>
+					) a 
+					WHERE
+			ROWNUM &lt;= #{page} * #{perPageSize}
+			)
+		WHERE
+			rnum &gt;= (#{page} - 1) * #{perPageSize} + 1 
+	</select>
+	
+	<select id="getLikeMusics" parameterType="map" resultType="Integer">
+		SELECT file_no
+		FROM like_music_tb
+		<where>
+			<if test="fileNo!=null">
+				AND file_no=#{fileNo}
+			</if>
+			
+			<if test="memberNo!=null">
+				AND member_no=#{memberNo}
+			</if>
+			
+			<if test="orderColumn!=null">
+				ORDER BY ${orderColumn}
+			</if>
+		
+		</where>
+	</select>
+	
+	<delete id="deleteLikesByMusicNo" parameterType="int">
+		DELETE FROM like_music_tb
+		where file_no = #{fileNo}
+	</delete>
+
+	
+</mapper>

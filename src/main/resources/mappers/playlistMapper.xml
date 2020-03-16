@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 작성자 이진구 -->
+ <!-- 김지우 4차 수정 : modify 부분 if절 추가 -->	
+<mapper namespace="com.overtheflow.mapper.PlaylistMapper">
+	<insert id="addPlaylist" parameterType="com.overtheflow.vo.PlaylistVO">
+		INSERT INTO playlist_tb (playlist_no, member_no, playlist_title, playlist_intro, playlist_reg_date, playlist_visibility)
+		VALUES (#{playlistNo}, #{memberNo}, #{playlistTitle}, #{playlistIntro}, sysdate, #{playlistVisibility})
+	</insert>
+	
+	<update id="modifyPlaylist" parameterType="com.overtheflow.vo.PlaylistVO">
+		UPDATE
+			playlist_tb
+		<set>
+			<if test="playlistTitle!=null">playlist_title=#{playlistTitle},</if>
+			<if test="playlistIntro!=null">playlist_intro=#{playlistIntro},</if>
+			<if test="playlistRegDate!=null">playlist_reg_date=#{playlistRegDate},</if>
+			<if test="playlistVisibility!=null">playlist_visibility=#{playlistVisibility},</if>
+		</set> 
+		where
+			playlist_no=#{playlistNo}
+	</update>
+	
+	<delete id="deletePlaylist" parameterType="Integer" >
+		DELETE FROM 
+			playlist_tb
+		WHERE 
+			playlist_no=#{playlistNo}
+	</delete>
+</mapper>
